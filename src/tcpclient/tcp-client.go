@@ -8,13 +8,14 @@ import (
 
 // Request and Response formats
 type Request struct {
-	Action string      `json:"action"`
-	Params interface{} `json:"params"`
+	Action     string      `json:"action"`
+	Params     interface{} `json:"params"`
+	ClientPort string      `json:"clientPort"`
 }
 
 type Response struct {
 	Status string      `json:"status"`
-	Data   interface{} `json:"data"`
+	Data   interface{} `json:"data,omitempty"`
 	Error  string      `json:"error,omitempty"`
 }
 

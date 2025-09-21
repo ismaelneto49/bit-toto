@@ -11,6 +11,11 @@ import (
 	"github.com/ismaelneto49/bit-toto/src/tcpclient"
 )
 
+type TCPAddrData struct {
+	IP   string `json:"ip"`
+	Port int    `json:"port"`
+}
+
 var peerConn *peerconnection.PeerConnectionImpl
 
 func InitServer(pc *peerconnection.PeerConnectionImpl, port string) {
@@ -30,7 +35,6 @@ func InitServer(pc *peerconnection.PeerConnectionImpl, port string) {
 }
 
 func handleConnection(conn net.Conn) {
-	log.Println("[SERVER] New connection from", conn.RemoteAddr())
 	defer conn.Close()
 	reader := bufio.NewReader(conn)
 	decoder := json.NewDecoder(reader)
@@ -42,6 +46,7 @@ func handleConnection(conn net.Conn) {
 			log.Println("[SERVER] Error decoding:", err)
 			return
 		}
+		log.Println("[SERVER] New connection from", req.ClientPort)
 
 		resp := handleRequest(req)
 
@@ -62,13 +67,41 @@ func handleRequest(req tcpclient.Request) tcpclient.Response {
 		}
 		searchId, ok := params["searchId"].(string)
 		fileName, ok2 := params["fileName"].(string)
-		depth, ok3 := params["depth"].(uint32)
+		depthFloat, ok3 := params["depth"].(float64)
+		depth := uint32(depthFloat)
 
 		if !ok || !ok2 || !ok3 {
 			return tcpclient.Response{Status: "error", Error: "invalid param types"}
 		}
 		ip, err := peerConn.ForwardSearch(searchId, fileName, depth)
-		return tcpclient.Response{Status: "ok", Data: ip, Error: err.Error()}
+		if err != nil {
+			return tcpclient.Response{Status: "error", Error: err.Error()}
+		}
+		return tcpclient.Response{
+			Status: "ok",
+			Data: TCPAddrData{
+				IP:   ip.IP.String(),
+				Port: ip.Port,
+			},
+		}
+	case "download":
+		params, ok := req.Params.(map[string]interface{})
+		if !ok {
+			return tcpclient.Response{Status: "error", Error: "invalid params"}
+		}
+		fileName, ok := params["fileName"].(string)
+		if !ok {
+			return tcpclient.Response{Status: "error", Error: "invalid param types"}
+		}
+
+		file, err := peerConn.ProvideFile(fileName)
+		if err != nil {
+			return tcpclient.Response{Status: "error", Error: err.Error()}
+		}
+		return tcpclient.Response{
+			Status: "ok",
+			Data:   file,
+		}
 	default:
 		return tcpclient.Response{Status: "error", Error: "unknown action"}
 	}

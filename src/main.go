@@ -31,6 +31,7 @@ func main() {
 		fmt.Println("Error opening config file:", err)
 		return
 	}
+
 	defer file.Close()
 
 	// Decode JSON config
@@ -52,9 +53,8 @@ func main() {
 	var knownIps []*net.TCPAddr
 	for _, n := range neighbors {
 		addr, err := net.ResolveTCPAddr("tcp", n)
-		if err != nil {
-			panic(err)
-		}
+		helpers.Treat(err)
+
 		knownIps = append(knownIps, addr)
 	}
 
@@ -65,6 +65,5 @@ func main() {
 	// Pass config to InitClient
 	go core.InitClient(peerConn)
 	core.InitServer(peerConn, port)
-
 
 }

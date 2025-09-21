@@ -23,25 +23,23 @@ func InitClient(peerConn *peerconnection.PeerConnectionImpl) {
 			continue
 		}
 		if cmd == "quit" {
-			fmt.Println("CLIENT] Exiting client REPL.")
+			fmt.Println("[CLIENT] Exiting client REPL.")
 			break
 		}
 		if cmd == "request" {
 			_, err := fmt.Scan(&filename)
 			if err != nil {
-				fmt.Println("CLIENT] Error reading filename:", err)
+				fmt.Println("[CLIENT] Error reading filename:", err)
 				continue
 			}
 			DEPTH := uint32(3)
 			fmt.Printf("[CLIENT] Search Depth: %d\n", DEPTH)
 			err = peerConn.GetFile(filename, DEPTH)
 			if err != nil {
-				fmt.Println("CLIENT] Error requesting file:", err)
-			} else {
-				fmt.Printf("CLIENT] Requested file: %s\n", filename)
+				fmt.Println("[CLIENT] Error searching file:", err)
 			}
 		} else {
-			fmt.Println("CLIENT] Unknown command.")
+			fmt.Println("[CLIENT] Unknown command.")
 		}
 	}
 }
