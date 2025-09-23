@@ -1,0 +1,8 @@
+Found entry for 127.0.0.1:5074: [127.0.0.1:5073 127.0.0.1:5075 127.0.0.1:5023 127.0.0.1:5013]
+[NODE] Node initialized with neighbors: [127.0.0.1:5073 127.0.0.1:5075 127.0.0.1:5023 127.0.0.1:5013]
+2025/09/23 15:33:07 [SERVER] Server listening on :5074
+[CLIENT] Enter command. Accepted commands:
+- request <filename>
+- quit
+2025/09/23 15:33:07 [CLIENT] EOF received, exiting client REPL.
+signal: interrupt

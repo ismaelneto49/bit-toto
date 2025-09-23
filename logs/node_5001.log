@@ -1,8 +1,14 @@
-Found entry for localhost:5001: [localhost:5002 localhost:5003]
-[NODE] Node initialized with neighbors: [localhost:5002 localhost:5003]
+Found entry for 127.0.0.1:5001: [127.0.0.1:5000 127.0.0.1:5002 127.0.0.1:5032 127.0.0.1:5030]
+[NODE] Node initialized with neighbors: [127.0.0.1:5000 127.0.0.1:5002 127.0.0.1:5032 127.0.0.1:5030]
 [CLIENT] Enter command. Accepted commands:
-2025/09/20 03:10:48 [SERVER] Server listening on :5001
 - request <filename>
 - quit
-[CLIENT] EOF received, exiting client REPL.
+2025/09/23 15:33:07 [CLIENT] EOF received, exiting client REPL.
+2025/09/23 15:33:07 [SERVER] Server listening on :5001
+2025/09/23 15:34:22 [SERVER] New search from 5000
+2025/09/23 15:34:22 [SERVER] File does not exist at ip:  127.0.0.1:5001
+2025/09/23 15:34:22 [SERVER] Max search depth reached
+2025/09/23 15:36:48 [SERVER] New search from 5000
+2025/09/23 15:36:48 [SERVER] File does not exist at ip:  127.0.0.1:5001
+2025/09/23 15:36:48 [SERVER] Max search depth reached
 signal: interrupt

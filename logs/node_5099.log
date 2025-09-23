@@ -1,0 +1,15 @@
+Found entry for 127.0.0.1:5099: [127.0.0.1:5000 127.0.0.1:5098 127.0.0.1:5006 127.0.0.1:5033 127.0.0.1:5054 127.0.0.1:5015 127.0.0.1:5041]
+[NODE] Node initialized with neighbors: [127.0.0.1:5000 127.0.0.1:5098 127.0.0.1:5006 127.0.0.1:5033 127.0.0.1:5054 127.0.0.1:5015 127.0.0.1:5041]
+[CLIENT] Enter command. Accepted commands:
+- request <filename>
+- quit
+2025/09/23 15:33:07 [CLIENT] EOF received, exiting client REPL.
+2025/09/23 15:33:07 [SERVER] Server listening on :5099
+2025/09/23 15:34:22 [SERVER] New search from 5000
+2025/09/23 15:34:22 [SERVER] File exists at ip:  127.0.0.1:5099
+2025/09/23 15:34:22 [SERVER] New download from 5000
+2025/09/23 15:34:22 [SERVER] File read at the ip  127.0.0.1:5099
+2025/09/23 15:36:48 [SERVER] New search from 5000
+2025/09/23 15:36:48 [SERVER] File does not exist at ip:  127.0.0.1:5099
+2025/09/23 15:36:48 [SERVER] Max search depth reached
+signal: interrupt
