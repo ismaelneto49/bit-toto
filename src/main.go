@@ -13,6 +13,7 @@ import (
 )
 
 type Config struct {
+	Depth       uint32              `json:"depth"`
 	Seed        int                 `json:"seed"`
 	Connections map[string][]string `json:"connections"`
 }
@@ -41,7 +42,7 @@ func main() {
 		return
 	}
 
-	key := "localhost:" + port
+	key := "127.0.0.1:" + port
 
 	neighbors, ok := config.Connections[key]
 	if !ok {
@@ -58,12 +59,12 @@ func main() {
 		knownIps = append(knownIps, addr)
 	}
 
-	peerConn, err := peerconnection.NewPeerConnection(knownIps)
+	peerConn, err := peerconnection.NewPeerConnection(knownIps, uint16(config.Seed))
 	helpers.Treat(err)
 	fmt.Println("[NODE] Node initialized with neighbors:", neighbors)
 
 	// Pass config to InitClient
-	go core.InitClient(peerConn)
+	go core.InitClient(peerConn, config.Depth)
 	core.InitServer(peerConn, port)
 
 }

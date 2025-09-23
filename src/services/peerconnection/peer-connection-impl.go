@@ -9,6 +9,8 @@ import (
 	"os"
 	"strconv"
 
+	"math/rand"
+
 	"github.com/ismaelneto49/bit-toto/src/helpers"
 	"github.com/ismaelneto49/bit-toto/src/tcpclient"
 )
@@ -19,10 +21,11 @@ type PeerConnectionImpl struct {
 	knownIps  []*net.TCPAddr
 	idCounter uint32
 	visitedBy map[string]bool
+	seed      uint16
 }
 
 // "Constructor"
-func NewPeerConnection(knownIps []*net.TCPAddr) (*PeerConnectionImpl, error) {
+func NewPeerConnection(knownIps []*net.TCPAddr, seed uint16) (*PeerConnectionImpl, error) {
 	port, err := strconv.Atoi(os.Args[1])
 	helpers.Treat(err)
 	return &PeerConnectionImpl{
@@ -30,19 +33,11 @@ func NewPeerConnection(knownIps []*net.TCPAddr) (*PeerConnectionImpl, error) {
 		knownIps:  knownIps,
 		idCounter: 0,
 		visitedBy: make(map[string]bool),
+		seed:      uint16(42),
 	}, nil
 }
 
 // ========================CLIENT===========================
-
-// func (conn *PeerConnectionImpl) Join(targetIp *net.TCPAddr) error {
-// 	// connect with targetIp
-
-// 	knownIps, err := tcpclient.Join(targetIp)
-// 	helpers.Treat(err)
-// 	conn.knownIps = append(conn.knownIps, knownIps...)
-// 	return nil
-// }
 
 func (conn *PeerConnectionImpl) GetFile(fileName string, depth uint32) error {
 	port := os.Args[1]
@@ -117,13 +112,22 @@ func (conn *PeerConnectionImpl) ForwardSearch(searchId string, fileName string, 
 	_, err := os.Stat(filePath)
 	fileExists := err == nil
 	if fileExists {
-		log.Println("[SERVER] File exists at the ip: ", &conn.ip)
+		log.Println("[SERVER] File exists at ip: ", &conn.ip)
 		return &conn.ip, nil
 	}
+	log.Println("[SERVER] File does not exist at ip: ", &conn.ip)
 
 	if depth == 1 {
-		return nil, errors.New("[SERVER] max search depth reached")
+		log.Println("[SERVER] Max search depth reached")
+		return nil, errors.New("max search depth reached")
+
 	}
+
+	// Shuffle knownIps using the seed
+	rng := rand.New(rand.NewSource(int64(conn.seed)))
+	rng.Shuffle(len(conn.knownIps), func(i, j int) {
+		conn.knownIps[i], conn.knownIps[j] = conn.knownIps[j], conn.knownIps[i]
+	})
 
 	decDepth := depth - 1
 	for _, targetIp := range conn.knownIps {

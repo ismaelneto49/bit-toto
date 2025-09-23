@@ -3,11 +3,12 @@ package core
 import (
 	"fmt"
 	"io"
+	"log"
 
 	"github.com/ismaelneto49/bit-toto/src/services/peerconnection"
 )
 
-func InitClient(peerConn *peerconnection.PeerConnectionImpl) {
+func InitClient(peerConn *peerconnection.PeerConnectionImpl, depth uint32) {
 	for {
 		var cmd, filename string
 		fmt.Println("[CLIENT] Enter command. Accepted commands:")
@@ -16,30 +17,29 @@ func InitClient(peerConn *peerconnection.PeerConnectionImpl) {
 		_, err := fmt.Scan(&cmd)
 		if err != nil {
 			if err == io.EOF {
-				fmt.Println("[CLIENT] EOF received, exiting client REPL.")
+				log.Println("[CLIENT] EOF received, exiting client REPL.")
 				return
 			}
-			fmt.Println("[CLIENT] Error reading command:", err)
+			log.Println("[CLIENT] Error reading command:", err)
 			continue
 		}
 		if cmd == "quit" {
-			fmt.Println("[CLIENT] Exiting client REPL.")
+			log.Println("[CLIENT] Exiting client REPL.")
 			break
 		}
 		if cmd == "request" {
 			_, err := fmt.Scan(&filename)
 			if err != nil {
-				fmt.Println("[CLIENT] Error reading filename:", err)
+				log.Println("[CLIENT] Error reading filename:", err)
 				continue
 			}
-			DEPTH := uint32(3)
-			fmt.Printf("[CLIENT] Search Depth: %d\n", DEPTH)
-			err = peerConn.GetFile(filename, DEPTH)
+			log.Printf("[CLIENT] Search Depth: %d\n", depth)
+			err = peerConn.GetFile(filename, depth)
 			if err != nil {
-				fmt.Println("[CLIENT] Error searching file:", err)
+				log.Println("[CLIENT] Error searching file:", err)
 			}
 		} else {
-			fmt.Println("[CLIENT] Unknown command.")
+			log.Println("[CLIENT] Unknown command.")
 		}
 	}
 }

@@ -43,10 +43,9 @@ func handleConnection(conn net.Conn) {
 	for {
 		var req tcpclient.Request
 		if err := decoder.Decode(&req); err != nil {
-			log.Println("[SERVER] Error decoding:", err)
 			return
 		}
-		log.Println("[SERVER] New connection from", req.ClientPort)
+		log.Printf("[SERVER] New %s from %s\n", req.Action, req.ClientPort)
 
 		resp := handleRequest(req)
 

@@ -23,7 +23,7 @@ func Search(addr *net.TCPAddr, searchId string, fileName string, depth uint32) (
 		return nil, err
 	}
 	if resp.Status != "ok" {
-		return nil, fmt.Errorf("[CLIENT] server error: %s", resp.Error)
+		return nil, fmt.Errorf("server error: %s", resp.Error)
 	}
 
 	dataMap, ok := resp.Data.(map[string]interface{})
@@ -58,12 +58,12 @@ func Download(addr *net.TCPAddr, fileName string) ([]byte, error) {
 		return nil, err
 	}
 	if resp.Status != "ok" {
-		return nil, fmt.Errorf("[CLIENT] server error: %s", resp.Error)
+		return nil, fmt.Errorf("server error: %s", resp.Error)
 	}
 
 	fileString, ok := resp.Data.(string)
 	if !ok {
-		return nil, fmt.Errorf("[CLIENT] invalid file data")
+		return nil, fmt.Errorf("invalid file data")
 	}
 
 	// decode base64 file
