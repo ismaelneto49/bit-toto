@@ -71,7 +71,8 @@ func (conn *PeerConnectionImpl) GetFile(fileName string, depth uint32) error {
 
 func download(targetIp *net.TCPAddr, fileName string) error {
 	// connect with targetIp
-	file, err := tcpclient.Download(targetIp, fileName)
+	// file, err := tcpclient.Download(targetIp, fileName)
+	_, err := tcpclient.Download(targetIp, fileName)
 	if err != nil {
 		return err
 	}
@@ -80,9 +81,9 @@ func download(targetIp *net.TCPAddr, fileName string) error {
 	port := os.Args[1]
 	filesFolderName := targetIp.IP.String() + ":" + port
 	filesFolderPath := fmt.Sprintf("files/%s/%s", filesFolderName, fileName)
-	if err := os.WriteFile(filesFolderPath, file, 0644); err != nil {
-		return err
-	}
+	// if err := os.WriteFile(filesFolderPath, file, 0644); err != nil {
+	// 	return err
+	// }
 	log.Println("[CLIENT] File saved at: ", filesFolderPath)
 	return nil
 }
@@ -113,6 +114,8 @@ func (conn *PeerConnectionImpl) ForwardSearch(searchId string, fileName string, 
 	fileExists := err == nil
 	if fileExists {
 		log.Println("[SERVER] File exists at ip: ", &conn.ip)
+		fundura := 1000 - depth + 1
+		log.Printf("[SAPATO] %s,%d\n", fileName, fundura)
 		return &conn.ip, nil
 	}
 	log.Println("[SERVER] File does not exist at ip: ", &conn.ip)

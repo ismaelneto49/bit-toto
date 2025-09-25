@@ -1,12 +1,12 @@
 const fs = require("fs");
 const path = require("path");
 
-// Usage: node setupFiles.js <numNodes> <filesFolder> <nodesFolder>
+// Usage: node fileDistributer.js <numNodes> <filesFolder> <nodesFolder>
 const numNodes = parseInt(process.argv[2]) || 10;
 const filesFolder = process.argv[3] || "files";
 const nodesFolder = process.argv[4] || "nodes";
 const basePort = 5000;
-const randomExtras = 5;
+const randomExtras = 0;
 
 // Ensure folders exist
 fs.mkdirSync(filesFolder, { recursive: true });

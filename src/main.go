@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net"
 
 	"encoding/json"
@@ -64,7 +65,9 @@ func main() {
 	fmt.Println("[NODE] Node initialized with neighbors:", neighbors)
 
 	// Pass config to InitClient
-	go core.InitClient(peerConn, config.Depth)
+	if port == "5000" {
+		log.Printf("[CACHORRO] %s", port)
+		go core.InitClient(peerConn, config.Depth)
+	}
 	core.InitServer(peerConn, port)
-
 }
