@@ -6,7 +6,7 @@ const numNodes = parseInt(process.argv[2]) || 10;
 const filesFolder = process.argv[3] || "files";
 const nodesFolder = process.argv[4] || "nodes";
 const basePort = 5000;
-const randomExtras = 0;
+const randomExtras = 20;
 
 // Ensure folders exist
 fs.mkdirSync(filesFolder, { recursive: true });
